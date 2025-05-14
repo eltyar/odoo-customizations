@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- إضافة الحقول إلى طريقة عرض شجرة سطر أمر البيع -->
+    <record id="view_order_line_tree_with_cost_margin" model="ir.ui.view">
+        <field name="name">sale.order.line.tree.with.cost.margin</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_subtotal']" position="after">
+                <field name="purchase_price" optional="show" string="تكلفة المنتج"/>
+                <field name="margin" optional="show" string="هامش الربح"/>
+                <field name="margin_percent" optional="show" string="نسبة هامش الربح (%)"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- إضافة الحقول إلى طريقة عرض النموذج لسطر أمر البيع -->
+    <record id="view_order_form_with_cost_margin" model="ir.ui.view">
+        <field name="name">sale.order.form.with.cost.margin</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- إضافة حقول في سطر أمر البيع -->
+            <xpath expr="//field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
+                <field name="purchase_price" optional="show" string="تكلفة المنتج"/>
+                <field name="margin" optional="show" string="هامش الربح"/>
+                <field name="margin_percent" optional="show" string="نسبة الهامش (%)"/>
+            </xpath>
+            
+            <!-- إضافة إجمالي هامش الربح في نهاية النموذج -->
+            <xpath expr="//field[@name='note']" position="before">
+                <group class="oe_subtotal_footer oe_right">
+                    <field name="margin_total" string="إجمالي الهامش"/>
+                    <field name="margin_percent_total" string="إجمالي نسبة الهامش (%)"/>
+                </group>
+                <div class="clearfix"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
